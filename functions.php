@@ -567,7 +567,7 @@ require_once ( get_stylesheet_directory() . '/inc/plugin-update-checker/plugin-u
     $updateChecker = Puc_v4_Factory::buildUpdateChecker(
         'https://github.com/bnzmgt/commerz',
         __FILE__,
-        'brightz'
+        'commerz'
     );
 
     // $updateChecker->setAuthentication( array(
