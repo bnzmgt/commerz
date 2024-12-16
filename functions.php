@@ -335,7 +335,8 @@ if (function_exists('add_theme_support')) {
 // -----------------------------------------------------------------------------
 function my_theme_enqueue_styles() {
 
-    $parent_style = 'brightz-style';
+    $parent_style = 'commerz-style';
+    $version = file_exists($css_file) ? filemtime($css_file) : '1.0.0';
     //wp_enqueue_script('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.3/jquery.min.js', array(), null, true );
     wp_enqueue_script('jquery', 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js', array(), null, true );    
     wp_enqueue_script('jsflexslider', 'https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.7.1/jquery.flexslider-min.js', array(), null, true );
@@ -351,7 +352,7 @@ function my_theme_enqueue_styles() {
 		wp_enqueue_style('fancybox', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css', array(), null,'all' );
     // wp_enqueue_style('fontello', get_stylesheet_directory_uri() . '/asset/fontello/css/marker.css', array(), null,'all' );
 		wp_enqueue_style('themify', get_stylesheet_directory_uri() . '/asset/fonts/themify-icons.css', array(), null,'all' );
-    wp_enqueue_style( $parent_style, get_template_directory_uri() . '/main.css' );
+    wp_enqueue_style( $parent_style, get_template_directory_uri() . '/main.css', array(), $version );
 
 }
 add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles', 60 );
