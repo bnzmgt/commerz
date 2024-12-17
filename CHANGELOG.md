@@ -1,3 +1,6 @@
+## 17 December 2024 - v1.0.3 ##
+* script header footer fix
+
 ## 16 December 2024 - v1.0.2 ##
 * versioning
 

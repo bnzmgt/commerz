@@ -21,9 +21,7 @@
 <?php 
     $header_script = get_field('basic_script', 'option');
     if( $header_script && !empty($header_script['basic_script_header']) ): ?>
-        <script>
-            <?php echo $header_script['basic_script_header']; ?>
-        </script>
+        <?php echo $header_script['basic_script_header']; ?>
 <?php endif; ?>
 
 </head>
