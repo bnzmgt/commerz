@@ -1,3 +1,6 @@
+## 08 January 2025 - v1.0.4 ##
+* product section on homepage
+
 ## 17 December 2024 - v1.0.3 ##
 * script header footer fix
 

@@ -5,7 +5,7 @@
 
 get_header(); ?>
 
-<div class="homepage font-sans -mt-[calc(6rem)]">
+<div class="homepage font-sans md:-mt-[calc(6rem)]">
     <?php if( have_rows('content_info') ): ?>
         <?php while ( have_rows('content_info') ) : the_row(); ?>
 
@@ -210,6 +210,52 @@ get_header(); ?>
                                 <div class="mt-8">
                                     <a href="<?php echo esc_url($variants_link_page['url']); ?>" class="flex items-center mx-auto max-w-fit rounded-full bg-transparent border border-blue-light text-blue-light px-8 py-3 text-center text-sm font-medium outline-none hover:bg-blue-light hover:text-white transition duration-100 md:text-base">
                                         <?php echo esc_html($variants_link_page['title']); ?>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+
+            <?php if( get_row_layout() == 'product' ): ?>
+                <?php 
+                $products = get_sub_field('products');
+                $products_link_page = get_sub_field('product_link_page');
+                $products_section_title = get_sub_field('product_section_title');
+                if( $products ): ?>
+                    <div class="product-section bg-white py-6 sm:py-8 lg:py-20">
+                        <div class="mx-auto max-w-screen-xl px-4 md:px-8">
+                            <h2 class="mb-8 text-center text-2xl font-bold text-gray-800 md:mb-16 lg:text-3xl">
+                                <?php echo esc_html($products_section_title); ?>
+                            </h2>
+                            <div class="grid gap-6 md:grid-cols-3 lg:gap-6">                                                                
+                                <?php foreach( $products as $product ): ?>
+                                    <a href="<?php echo esc_url($product['product_link']); ?>">
+                                        <div class="">
+                                            <div class="flex shrink-0 items-center justify-center rounded-lg bg-orange text-white shadow-lg md:rounded-xl">
+                                                <?php if( $product['product_image'] ): ?>
+                                                    <img src="<?php echo esc_url($product['product_image']); ?>" alt="<?php echo esc_url($product['product_image']); ?>" class="w-full" />
+                                                <?php endif; ?>
+                                            </div>
+
+                                            <?php if( $product['product_type'] ): ?>
+                                                <h3 class="my-4 text-lg font-semibold md:text-xl"><?php echo esc_html($product['product_type']); ?></h3>
+                                            <?php endif; ?>
+                                            <?php if( $product['product_price'] ): ?>
+                                                <p class="mb-2 text-lg font-semibold md:text-lg">Rp. <?php echo esc_html($product['product_price']); ?></p>
+                                            <?php endif; ?>
+                                            <?php if( $product['pricing_excerpt'] ): ?>
+                                                <p class="mb-2 text-gray-500"><?php echo esc_html($product['pricing_excerpt']); ?></p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>                             
+                            </div>
+                            <?php if( $products_link_page ): ?>
+                                <div class="mt-8">
+                                    <a href="<?php echo esc_url($products_link_page['url']); ?>" class="flex items-center mx-auto max-w-fit rounded-full bg-transparent border border-blue-light text-blue-light px-8 py-3 text-center text-sm font-medium outline-none hover:bg-blue-light hover:text-white transition duration-100 md:text-base">
+                                        <?php echo esc_html($products_link_page['title']); ?>
                                     </a>
                                 </div>
                             <?php endif; ?>

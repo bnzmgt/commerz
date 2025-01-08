@@ -1,4 +1,4 @@
-<footer class="bg-primary">
+<footer class="bg-primary relative z-[1] md:mt-20">
    
     <div class="relative bg-orange py-6">
         <div class="mx-auto max-w-screen-lg px-4 md:px-8">

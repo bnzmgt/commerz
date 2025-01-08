@@ -144,3 +144,18 @@
         margin: 0 -32px;
     }
 }
+
+.product-section {
+    @apply relative z-[1];
+
+    &:before {
+        background: linear-gradient(180deg, #ffe297 -35.55%, rgba(245, 138, 37, 0) 100%, #ffe195 0);
+        content: "";
+        filter: blur(150px);
+        height: 100%;
+        opacity: .8;
+        position: absolute;
+        width: 100%;
+        z-index: -1;
+    }
+}
