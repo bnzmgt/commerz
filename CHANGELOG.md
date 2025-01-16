@@ -1,3 +1,7 @@
+## 16 January 2025 - v1.0.5 ##
+* product section on homepage
+* header script
+
 ## 08 January 2025 - v1.0.4 ##
 * product section on homepage
 

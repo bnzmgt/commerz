@@ -223,6 +223,7 @@ get_header(); ?>
                 $products = get_sub_field('products');
                 $products_link_page = get_sub_field('product_link_page');
                 $products_section_title = get_sub_field('product_section_title');
+               
                 if( $products ): ?>
                     <div class="product-section bg-white py-6 sm:py-8 lg:py-20">
                         <div class="mx-auto max-w-screen-xl px-4 md:px-8">
@@ -231,25 +232,38 @@ get_header(); ?>
                             </h2>
                             <div class="grid gap-6 md:grid-cols-3 lg:gap-6">                                                                
                                 <?php foreach( $products as $product ): ?>
-                                    <a href="<?php echo esc_url($product['product_link']); ?>">
-                                        <div class="">
-                                            <div class="flex shrink-0 items-center justify-center rounded-lg bg-orange text-white shadow-lg md:rounded-xl">
-                                                <?php if( $product['product_image'] ): ?>
-                                                    <img src="<?php echo esc_url($product['product_image']); ?>" alt="<?php echo esc_url($product['product_image']); ?>" class="w-full" />
+                                    
+                                    <div class="product-item">
+                                        <a href="<?php echo esc_url($product['product_link']); ?>">
+                                            <div>
+                                                <div class="flex shrink-0 items-center justify-center rounded-lg bg-orange text-white shadow-lg md:rounded-xl">
+                                                    <?php if( $product['product_image'] ): ?>
+                                                        <img src="<?php echo esc_url($product['product_image']); ?>" alt="<?php echo esc_url($product['product_image']); ?>" class="w-full" />
+                                                    <?php endif; ?>
+                                                </div>
+
+                                                <?php if( $product['product_type'] ): ?>
+                                                    <h3 class="my-4 text-lg font-semibold md:text-xl"><?php echo esc_html($product['product_type']); ?></h3>
+                                                <?php endif; ?>
+                                                <?php if( $product['product_price'] ): ?>
+                                                    <p class="mb-2 text-lg font-semibold md:text-lg">Rp. <?php echo esc_html(number_format($product['product_price'], 0, ',', '.')); ?>
+                                                    </p>
+                                                <?php endif; ?>
+                                                <?php if( $product['pricing_excerpt'] ): ?>
+                                                    <p class="mb-2 text-gray-500"><?php echo esc_html($product['pricing_excerpt']); ?></p>
                                                 <?php endif; ?>
                                             </div>
+                                        </a>
+                                        <?php if (!empty($product['product_link_buy']) && is_array($product['product_link_buy'])) : ?>
+                                            <a href="<?php echo isset($product['product_link_buy']['url']) ? esc_url($product['product_link_buy']['url']) : '#'; ?>" 
+                                            target="<?php echo isset($product['product_link_buy']['target']) ? esc_attr($product['product_link_buy']['target']) : '_self'; ?>" 
+                                            class="btn-link">
+                                                <?php echo isset($product['product_link_buy']['title']) ? esc_html($product['product_link_buy']['title']) : 'Default Title'; ?>
+                                            </a>
+                                        <?php endif; ?>
 
-                                            <?php if( $product['product_type'] ): ?>
-                                                <h3 class="my-4 text-lg font-semibold md:text-xl"><?php echo esc_html($product['product_type']); ?></h3>
-                                            <?php endif; ?>
-                                            <?php if( $product['product_price'] ): ?>
-                                                <p class="mb-2 text-lg font-semibold md:text-lg">Rp. <?php echo esc_html($product['product_price']); ?></p>
-                                            <?php endif; ?>
-                                            <?php if( $product['pricing_excerpt'] ): ?>
-                                                <p class="mb-2 text-gray-500"><?php echo esc_html($product['pricing_excerpt']); ?></p>
-                                            <?php endif; ?>
-                                        </div>
-                                    </a>
+                                    </div>                                    
+                                    
                                 <?php endforeach; ?>                             
                             </div>
                             <?php if( $products_link_page ): ?>

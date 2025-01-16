@@ -13,10 +13,10 @@
     font-weight: normal;
     font-style: normal;
     font-display: swap;
-  }
+}
   
-  /* Icon classes */
-  [class^="icon-"]:before, [class*=" icon-"]:before {
+/* Icon classes */
+[class^="icon-"]:before, [class*=" icon-"]:before {
     font-family: "klastera";
     font-style: normal;
     font-weight: normal;
@@ -29,22 +29,41 @@
     margin-left: .2em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
+}
   
-  /* Individual icons */
-  .icon-ks-bathroom:before { content: '\e800'; }
-  .icon-ks-bed:before { content: '\e801'; }
-  .icon-ks-marker:before { content: '\e802'; }
-  .icon-ks-space:before { content: '\e803'; }
-  .icon-ks-build:before { content: '\e804'; }
-  .icon-ks-cert:before { content: '\e805'; }
-  .icon-ks-electric:before { content: '\e806'; }
-  .icon-ks-whatsapp:before { content: '\e807'; }
-  .icon-ks-telephone:before { content: '\e808'; }
-  .icon-ks-instagram:before { content: '\e809'; }
-  .icon-ks-facebook:before { content: '\e80a'; }
-  .icon-ks-twitter:before { content: '\e80b'; }
-  
+/* Individual icons */
+.icon-ks-bathroom:before { content: '\e800'; }
+.icon-ks-bed:before { content: '\e801'; }
+.icon-ks-marker:before { content: '\e802'; }
+.icon-ks-space:before { content: '\e803'; }
+.icon-ks-build:before { content: '\e804'; }
+.icon-ks-cert:before { content: '\e805'; }
+.icon-ks-electric:before { content: '\e806'; }
+.icon-ks-whatsapp:before { content: '\e807'; }
+.icon-ks-telephone:before { content: '\e808'; }
+.icon-ks-instagram:before { content: '\e809'; }
+.icon-ks-facebook:before { content: '\e80a'; }
+.icon-ks-twitter:before { content: '\e80b'; }
+.icon-ks-mail:before { content: '\e80c'; }
+.icon-ks-left:before { content: '\e80d'; }
+.icon-ks-right:before { content: '\e80e'; }
+.icon-ks-up:before { content: '\e80f'; }
+.icon-ks-rights:before { content: '\e810'; }
+.icon-ks-lefts:before { content: '\e811'; }
+.icon-ks-down:before { content: '\e812'; }
+.icon-ks-basket:before { content: '\e813'; }
+.icon-ks-phone:before { content: '\e814'; }
+.icon-ks-pdf:before { content: '\f1c1'; }
+
+
+.breadcrumb-link {
+    @apply text-primary hover:text-primary;
+    &:after {
+        content: "\e810";
+        font-family: "klastera";
+        @apply text-primary text-xs px-2;
+    }
+}
 
 .homepage .pricing-section .pricing-variant h4 {
     background-color: #E2E2DF;
@@ -157,5 +176,55 @@
         position: absolute;
         width: 100%;
         z-index: -1;
+    }
+
+    .product-item {
+        .btn-link {
+            @apply bg-orange border hover:bg-orange hover:text-white border-orange text-white rounded-full py-2 px-6 text-sm mt-3 inline-block;
+            &:before {
+                font-family: "klastera";
+                content: "\e813";
+                @apply text-white hover:text-white mr-2;
+            }
+        }
+    }
+}
+
+.product-details {
+    .product-excerpt {
+        .box-action {
+            .button-action {
+                .action {
+                    @apply bg-orange border hover:bg-orange hover:text-white border-orange text-white rounded-full py-2 px-6 text-sm mt-3 inline-block;
+
+                    &.whatsapp {
+                        @apply bg-primary border hover:bg-primary hover:text-white border-primary text-white py-2 px-6 text-sm mt-3 inline-block;
+                        &:before {
+                            font-family: "klastera";
+                            content: "\e807";
+                            @apply text-white hover:text-white mr-2;
+                        }
+                    }
+
+                    &.phone {
+                        @apply bg-primary border hover:bg-primary hover:text-white border-primary text-white py-2 px-6 text-sm mt-3 inline-block;
+                        &:before {
+                            font-family: "klastera";
+                            content: "\e814";
+                            @apply text-white hover:text-white mr-2;
+                        }
+                    }
+
+                    &.link {
+                        @apply bg-orange border hover:bg-orange hover:text-white border-orange text-white py-2 px-6 text-sm mt-3 inline-block;
+                        &:before {
+                            font-family: "klastera";
+                            content: "\e813";
+                            @apply text-white hover:text-white mr-2;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

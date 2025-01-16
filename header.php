@@ -18,6 +18,13 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
+<!-- Script for Global Site -->
+<?php
+    $header_script = get_field('basic_script', 'option');
+        if( $header_script && !empty($header_script['basic_script_header']) ): ?>
+    <?php echo $header_script['basic_script_header']; ?>
+<?php endif; ?>
+
 </head>
 
 <body <?php body_class(); ?>>
