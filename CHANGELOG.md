@@ -1,3 +1,6 @@
+## 18 January 2025 - v1.0.6 ##
+* landing page
+
 ## 16 January 2025 - v1.0.5 ##
 * product section on homepage
 * header script
