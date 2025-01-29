@@ -10,31 +10,44 @@ get_header();
 ?>
 
 <div id="content" class="page">
-    <div class="content-wrap">
-        <div class="container">
-            <div class="row">
-                <?php
-                if (have_posts()): while (have_posts()) : the_post(); ?>
+    <div class="bg-white py-6 sm:pt-8 sm:pb-8 lg:pt-8 lg:pb-16">
+        <div class="container w-11/12 lg:w-9/12 mx-auto px-4 md:px-8">
 
-                <div class="col-md-8 col-sm-8 col-xs-12">
-                    <div class="box-list">
-                        <?php the_post_thumbnail( 'large', array('class' => 'img-fluid') );?>
-                        <h1><?php the_title();?></h1>
-                        <div class="meta">
-                            <span class="author"><i class="ti-user"></i>by <?php the_author(); ?></span>
-                            <span class="date"><i class="ti-calendar"></i><?php echo get_the_date('d F Y', strtotime('post_date')); ?></span>
+            <?php breadcrumbs(); ?>
+
+            <div class="flex flex-col md:flex-row mt-7">
+                <div class="w-full md:w-10/12">
+                    <?php
+                    if (have_posts()): while (have_posts()) : the_post(); ?>
+
+                        <div class="box-list">
+                            <?php the_post_thumbnail( 'large', array('class' => 'img-fluid') );?>
+                            <h1><?php the_title();?></h1>
+                            <div class="meta">
+                                <span class="author">
+                                    <i class="ti-book"></i>
+                                    <?php
+                                        $categories = get_the_category();
+                                        if ( ! empty( $categories ) ) {
+                                            foreach ( $categories as $category ) {
+                                                echo esc_html( $category->name );
+                                            }
+                                        }
+                                    ?>
+                                </span>
+                                <span class="date"><i class="ti-calendar"></i><?php echo get_the_date('d F Y', strtotime('post_date')); ?></span>
+                            </div>
+                            <div class="contentblog">
+                                <?php the_content(); ?>
+                            </div>
                         </div>
-                        <div class="contentblog">
-                            <?php the_content(); ?>
-                        </div>
-                    </div>
-                </div><!-- end .col-md-8 -->
 
-                <?php endwhile; ?>
-                <?php endif; ?>
-                <?php wp_reset_postdata(); ?>
+                    <?php endwhile; ?>
+                    <?php endif; ?>
+                    <?php wp_reset_postdata(); ?>
 
-                <div class="col-md-4 col-sm-4 col-xs-12">
+                </div> 
+                <div class="w-full md:w-1/3">
                     <aside class="sidebar sidebar-right">
                         <div class="widget">
                             <div class="widget blog-heading blog-recent-post">
@@ -62,10 +75,12 @@ get_header();
                             </div><!-- end .widget -->
                         </div><!-- end .widget -->
                     </aside>
-                </div><!-- end .col-md-4 -->
-            </div><!-- end .row -->
-        </div><!-- end .container -->
-    </div><!-- end .content-wrap -->
+                </div>
+            </div>   
+        </div>
+    </div>
+
+
 </div><!-- end #content -->
 
 <?php get_footer(); ?>

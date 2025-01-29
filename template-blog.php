@@ -17,27 +17,22 @@ get_header();
                 <div class="container inner-box clearfix">
                     <div class="inner-box-container">
                         <div class="intro-title">
-                            <h1><?php the_title(); ?> </h1>
                         </div>
                     </div><!-- end .inner-container -->
                 </div><!-- end .inner-box -->
             </div><!-- end .outer-inner -->
         </div><!-- end .intro-inner -->
     </div><!-- end .page-intro -->
+        
     
-    <div id="breadcrumbs">
-        <div class="container">
-            <div class="my-4">        
-                <?php breadcrumbs(); ?>
-            </div>
-        </div>
-    </div>
+    <div class="bg-white py-6 sm:pt-8 sm:pb-8 lg:pt-8 lg:pb-16">
+        <div class="container w-11/12 lg:w-9/12 mx-auto px-4 md:px-8">
+            
+            <?php breadcrumbs(); ?>
 
-    <div class="content-wrap mb-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-12">
-					<?php
+            <div class="flex flex-col md:flex-row mt-7">            
+                <div class="w-full md:w-10/12">
+                    <?php
 					// the query
 					$wpb_all_query = new WP_Query(array('post_type'=>'post', 'post_status'=>'publish', 'posts_per_page'=>-1, 'category_name' => 'artikel')); ?>
 
@@ -59,14 +54,25 @@ get_header();
 	                                    echo '<img src="'.$image[0].'" data-id="'.$post->ID.'" class="img-fluid" alt="'.$alt.'" title="'.$title.'">';
 	                                }
                                 ?>
+                                
 								<div class="meta">
-                                    <span class="author"><i class="ti-user"></i>by <?php the_author(); ?></span>
+                                    <span class="author">
+                                        <i class="ti-book"></i>
+                                        <?php
+                                            $categories = get_the_category();
+                                            if ( ! empty( $categories ) ) {
+                                                foreach ( $categories as $category ) {
+                                                    echo esc_html( $category->name );
+                                                }
+                                            }
+                                        ?>
+                                    </span>
                                     <span class="date"><i class="ti-calendar"></i><?php echo get_the_date('d F Y', strtotime('post_date')); ?></span>
                                 </div>
 
                                 <h4><a href="<?php the_permalink(); ?>" title="<?php the_title() ?>"><?php the_title(); ?></a></h4>
                                 <?php echo the_excerpt(); ?>
-                                <a href="<?php the_permalink(); ?>" class="btn unibtn unibtn__background unibtn__arrow">read more article</a>
+                                <a href="<?php the_permalink(); ?>" class="link-more mt-4">Baca selengkapnya</a>
 							</div>
 					    <?php endwhile; ?>
 					    <!-- end of the loop -->
@@ -76,9 +82,8 @@ get_header();
 					<?php else : ?>
 					    <p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
 					<?php endif; ?>
-
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="w-full md:w-1/3">
                     <aside class="sidebar sidebar-right">
                         <div class="widget">
                             <div class="widget blog-heading blog-recent-post">
@@ -106,10 +111,10 @@ get_header();
                             </div><!-- end .widget -->
                         </div><!-- end .widget -->
                     </aside>
-                </div><!-- end .col-md-4 -->
+                </div>
             </div>
-        </div><!-- end .container -->
-    </div><!-- end .content-wrap -->
+        </div>
+    </div>
 
 </div><!-- end .content -->
 

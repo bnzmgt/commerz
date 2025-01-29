@@ -491,57 +491,122 @@ add_action('wp_head', 'remove_header');
 // Breadcrumb
 // -----------------------------------------------------------------------------
 if ( ! function_exists( 'breadcrumbs' ) ) :
-function breadcrumbs() {
-    $delimiter = '&rsaquo;';
-    $home = 'Home';
+    function breadcrumbs() {
+        $delimiter = '&rsaquo;';
+        $home = 'Home';
 
-    echo '<div xmlns:v="http://rdf.data-vocabulary.org/#">';
-    global $post;
-    echo ' <span typeof="v:Breadcrumb">
-    <a rel="v:url" property="v:title" href="'.home_url( '/' ).'">'.$home.'</a>
-    </span> ';
-    $cats = get_the_category();
-    if ($cats) {
-        foreach($cats as $cat) {
-        echo $delimiter . "<span typeof=\"v:Breadcrumb\">
-        <a rel=\"v:url\" property=\"v:title\" href=\"".get_category_link($cat->term_id)."\" >$cat->name</a>
-        </span>"; }
+        echo '<div xmlns:v="http://rdf.data-vocabulary.org/#" class="breadcrumb py-1">';
+        global $post;
+        echo '<a rel="v:url" property="v:title" href="'.home_url( '/' ).'" class="breadcrumb-link text-sm">'.$home.'</a>';
+
+        $blog_url_field = get_field('basic_blog_url', 'option'); // Use 'option' to fetch from ACF Options page
+
+        // Check if the field is set and contains a valid URL and title
+        if ( !empty($blog_url_field) && isset($blog_url_field['url'], $blog_url_field['title']) ) {
+            $blog_url = esc_url($blog_url_field['url']);
+            $blog_title = esc_html($blog_url_field['title']); // Get the title
+        } else {
+            // Fallback if not set
+            $blog_url = home_url('/blog/');
+            $blog_title = 'Blog'; // Default title
+        }
+
+        // Check if the current page is the Blog Page
+        $is_blog_page = ( get_permalink() === $blog_url );
+        
+
+        // Output the breadcrumb
+
+        if ( $is_blog_page ) {
+            // Avoid "Blog > Blog" on the blog list page
+            echo '<span class="breadcrumb-current text-sm">' . $blog_title . '</span>';
+        } else {
+            // Output the breadcrumb link for the Blog
+            echo "<span typeof=\"v:Breadcrumb\">
+                <a class=\"breadcrumb-link text-sm\" rel=\"v:url\" property=\"v:title\" href=\"{$blog_url}\">{$blog_title}</a>
+            </span>";
+
+            // Add the current page title
+            echo the_title(' <span class="breadcrumb-current text-sm">', '</span>', false);
+        }
+
+        echo '</div>';
+
     }
-    echo $delimiter . the_title(' <span>', '</span>', false);
-    echo '</div>';
-}
 endif;
 
-function torque_breadcrumbs() {
-	/* Change according to your needs */
-	$show_on_homepage = 0;
-	$show_current = 1;
-	$delimiter = '&raquo;';
-	$home_url = 'Home';
-	$before_wrap = '<span clas="current">';
-	$after_wrap = '</span>';
+// Step 1: Add the dashboard option
+function social_share_settings_init() {
+    // Register a new setting
+    register_setting('general', 'enable_social_share_buttons', array(
+        'type' => 'boolean',
+        'sanitize_callback' => 'rest_sanitize_boolean',
+        'default' => 1, // Enable by default
+    ));
 
-	/* Don't change values below */
-	global $post;
-	$home_url = get_bloginfo( 'url' );
-
-	/* Check for homepage first! */
-	if ( is_home() || is_front_page() ) {
-		$on_homepage = 1;
-	}
-	if ( 0 === $show_on_homepage && 1 === $on_homepage ) return;
-
-	/* Proceed with showing the breadcrumbs */
-	$breadcrumbs = '<ol id="crumbs" itemscope itemtype="http://schema.org/BreadcrumbList">';
-
-	$breadcrumbs .= '<li itemprop="itemListElement" itemtype="http://schema.org/ListItem"><a target="_blank" href="' . $home_url . '">' . $home_url . '</a></li>';
-
-	/* Build breadcrumbs here */
-
-	$breadcrumbs .= '</ol>';
-
-	echo $breadcrumbs;
+    // Add a new section to the "General" settings page
+    add_settings_field(
+        'enable_social_share_buttons',
+        __('Enable Social Share Buttons', 'textdomain'),
+        'social_share_settings_callback',
+        'general',
+        'default',
+        array(
+            'label_for' => 'enable_social_share_buttons'
+        )
+    );
 }
+add_action('admin_init', 'social_share_settings_init');
+
+function social_share_settings_callback($args) {
+    // Get the current value of the setting
+    $value = get_option('enable_social_share_buttons', 1);
+
+    // Output the checkbox
+    echo '<input type="checkbox" id="' . esc_attr($args['label_for']) . '" name="enable_social_share_buttons" value="1"' . checked(1, $value, false) . '>';
+    echo '<p class="description">' . __('Check to enable social share buttons on posts.', 'textdomain') . '</p>';
+}
+
+// Step 2: Add social share buttons function
+function add_social_share_buttons($content) {
+    // Check if the setting to enable social share buttons is active
+    if (!get_option('enable_social_share_buttons', 1)) {
+        return $content; // Return content without the buttons
+    }
+
+    // Get the current page URL
+    $url = esc_url(get_permalink());
+
+    // Get the current page title
+    $title = urlencode(html_entity_decode(get_the_title(), ENT_COMPAT, 'UTF-8'));
+
+    // Create an array of social networks and their respective sharing URLs
+    $social_networks = array(
+        'Facebook' => 'https://www.facebook.com/sharer/sharer.php?u=' . $url,
+        'Twitter' => 'https://twitter.com/intent/tweet?url=' . $url . '&text=' . $title,
+        'LinkedIn' => 'https://www.linkedin.com/shareArticle?url=' . $url . '&title=' . $title,
+        'Pinterest' => 'https://pinterest.com/pin/create/button/?url=' . $url . '&description=' . $title,
+    );
+
+    // Initialize the share buttons HTML
+    $share_buttons = '<div class="social-share-buttons">';
+
+    // Loop through the social networks and generate the share buttons HTML
+    foreach ($social_networks as $network => $share_url) {
+        $share_buttons .= '<a href="' . $share_url . '" target="_blank" rel="noopener" class="' . strtolower($network) . '">' . $network . '</a>';
+    }
+
+    // Close the share buttons HTML
+    $share_buttons .= '</div>';
+
+    // Append the share buttons HTML to the content
+    $content .= $share_buttons;
+
+    return $content;
+}
+
+// Add the social share buttons after the content
+add_filter('the_content', 'add_social_share_buttons');
 
 function select2_adjust() {
   	echo '<style>

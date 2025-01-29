@@ -321,6 +321,72 @@ get_header(); ?>
 
         <?php endwhile; ?>
     <?php endif; ?>
+
+    <div class="article-section bg-white py-6 sm:py-8 lg:py-12">
+        <div class="container w-11/12 xl:w-9/12 mx-auto px-4 md:px-8">
+
+            <?php
+            $post_objects = get_field('home_content_blog');
+
+            if ( $post_objects ): // Only display section if posts exist ?>
+                <div class="flex items-center justify-center">
+                    <h2 class="mb-8 text-center text-2xl font-bold text-gray-800 md:mb-12 lg:text-3xl">Artikel</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <?php foreach( $post_objects as $post): // variable must be called $post (IMPORTANT) ?>
+                    <?php setup_postdata($post); ?>
+                    <?php
+                        // get image alt
+                        $thumb_id = get_post_thumbnail_id(get_the_id());
+                        $alt = get_post_meta($thumb_id, '_wp_attachment_image_alt', true);
+                        $title = get_the_title($thumb_id);
+                    ?>
+                    <div class="relative z-[1]">
+                        <div class="unibox uniblog uniblog__duo transform">
+                            <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
+                                <div class="unibloginner">
+                                    <?php if ( wp_is_mobile() ) : ?>
+                                        <div class="unimages">
+                                            <?php
+                                                if ( has_post_thumbnail() ) {
+                                                    $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'album-grid' );
+                                                    echo '<img src="'.$image[0].'" data-id="'.$post->ID.'" class="img-responsive" alt="'.$alt.'" title="'.$title.'">';
+                                                }
+                                            ?>
+                                        </div>
+                                    <?php else : ?>
+                                        <div class="unimages">
+                                            <?php
+                                                if ( has_post_thumbnail() ) {
+                                                    $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'album-grid' );
+                                                    echo '<img src="'.$image[0].'" data-id="'.$post->ID.'" class="img-responsive" alt="'.$alt.'" title="'.$title.'">';
+                                                }
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="info">
+                                        <div class="meta">
+                                            <span class="time">
+                                                <i class="ti-calendar" aria-hidden="true"></i> <span class="ml-2"><?php echo get_the_date('d F Y', strtotime('post_date')); ?></span>
+                                            </span>
+                                        </div>
+                                        <h3><?php the_title(); ?></h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                    <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
+                </div>
+
+
+            <?php endif; ?>  
+
+
+        </div>
+    </div>
 </div>
 
 <?php get_footer(); ?>
